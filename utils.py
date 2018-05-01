@@ -18,7 +18,7 @@ __author__ = "Ben Eisner, Tim Rocktaschel"
 __email__ = "beisner@princeton.edu"
 
 
-def generate_embeddings(ind2phr, kb, embeddings_file, word2vec_file, word2vec_dim=300):
+def generate_embeddings(ind2phr, kb, embeddings_file, word2vec_file, word2vec_dim=100):
     """Generate a numpy array of phrase embeddings for all phrases in the knowledge base.
 
         Since it is expensive to calculate these phrase embeddings every time, we cache the output
@@ -51,7 +51,7 @@ def generate_embeddings(ind2phr, kb, embeddings_file, word2vec_file, word2vec_di
         phrase_vector_sums = pk.load(open(embeddings_file, 'rb'))
 
     # build the embeddings array, for lookup later
-    embeddings_array = np.zeros(shape=[len(ind2phr), 300], dtype=np.float32)
+    embeddings_array = np.zeros(shape=[len(ind2phr), 100], dtype=np.float32)
     for ind, phr in ind2phr.items():
         embeddings_array[ind] = phrase_vector_sums[phr]
 
@@ -60,7 +60,7 @@ def generate_embeddings(ind2phr, kb, embeddings_file, word2vec_file, word2vec_di
 
 # Read data from a file and inject it into a knowledge base
 def __read_data(filename, base, ind_to_phr, ind_to_emoj, typ):
-    with open(filename, 'r') as f:
+    with open(filename, 'r', encoding="utf8") as f:
         # build the data line by line
         lines = f.readlines()
         for line in lines:
