@@ -65,6 +65,7 @@ out/
 # large binaries
 data/word2vec
 data/glove
+data/w2v
 
 # generated embeddings
 generated_embeddings.p
