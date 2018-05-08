@@ -1,10 +1,11 @@
 """Visualize emoji clusters using TSNE"""
 
 # External dependencies
-import sklearn.manifold as man
-import matplotlib.pyplot as plt
-import tensorflow as tf
 import pickle as pk
+import tensorflow as tf
+import sklearn.manifold as man
+import matplotlib.pyplot as plt, mpld3
+from matplotlib import font_manager as fm
 
 # Internal dependencies
 from model import Emoji2Vec
@@ -32,20 +33,25 @@ def __visualize():
 
         V = session.run(model.V)
 
+
     # plot the emoji using TSNE
     fig = plt.figure()
+    prop = fm.FontProperties(fname='data/Multicoloure-SVGinOT.ttf')
     ax = fig.add_subplot(111)
     tsne = man.TSNE(perplexity=50, n_components=2, init='random', n_iter=300000, early_exaggeration=1.0,
                     n_iter_without_progress=1000)
     trans = tsne.fit_transform(V)
+    trans = trans.tolist()
     x, y = zip(*trans)
     plt.scatter(x, y, marker='o', alpha=0.0)
 
     for i in range(len(trans)):
-        ax.annotate(mapping[i], xy=trans[i], textcoords='data')
+        ax.annotate(mapping[i], xy=trans[i], textcoords='data', fontsize=18, fontproperties=prop)
 
-    plt.grid()
-    plt.show()
+    # plt.grid()
+    # plt.show()
+    mpld3.show()
+
 
 if __name__ == '__main__':
     __visualize()
